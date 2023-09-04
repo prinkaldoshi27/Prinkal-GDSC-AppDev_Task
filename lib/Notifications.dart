@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-import 'Notifications.dart';
-import 'Events.dart';
 
-class Homepage extends StatefulWidget {
-  const Homepage({super.key});
+import 'Events.dart';
+import 'Homepage.dart';
+
+class Notifications extends StatefulWidget {
+  const Notifications({super.key});
 
   @override
-  State<Homepage> createState() => _HomepageState();
+  State<Notifications> createState() => _NotificationsState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
           child: Scaffold(
-        appBar: AppBar(
-          title: Text('GDSC Homepage'),
-          backgroundColor: Colors.purple,
-          foregroundColor: Colors.white,
-        ),
-            body: Center(child: Text('GDSC Homepagae',style: TextStyle(
-              fontSize: 20
+            appBar: AppBar(
+              title: Text('GDSC Notifications'),
+              backgroundColor: Colors.purple,
+              foregroundColor: Colors.white,
+            ),
+            body: Center(child: Text('GDSC Notifications',style: TextStyle(
+                fontSize: 20
             ),)),
             bottomNavigationBar: BottomNavigationBar(
               items: [
@@ -31,7 +32,7 @@ class _HomepageState extends State<Homepage> {
                     icon: Icon(Icons.notification_important),
                     label: 'Notifications'),
               ],
-              currentIndex: 0,
+              currentIndex: 2,
               onTap: (index) {
                 if (index == 0) {
                   Navigator.of(context).push(
@@ -52,10 +53,9 @@ class _HomepageState extends State<Homepage> {
                     ),
                   );
                 }
-
               },
             ),
-      )),
+          )),
     );
   }
 }
