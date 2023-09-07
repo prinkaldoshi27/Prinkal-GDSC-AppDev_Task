@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'Homepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
   bool _passwordVisible = false;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -17,6 +18,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String errortext = '';
   @override
   Widget build(BuildContext context) {
+    @override
+    void dispose() {
+      super.dispose();
+      emailController.dispose();
+      passwordController.dispose();
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -30,8 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const Text(
-                  'Welcome to App Dev ',
-                  style: TextStyle(fontSize: 30),
+                  'Hello',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  'Enter your Credentials to Login',
+                  style: TextStyle(fontSize: 20, color: Colors.grey),
                 ),
                 Form(
                   key: _formKey,
@@ -104,13 +116,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10)))),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => Homepage(),
-                                    ),
-                                  );
+                                  try {
+                                    if (emailController != null ||
+                                        passwordController != null) {
+                                      await _auth.signInWithEmailAndPassword(
+                                          email: emailController.text,
+                                          password: passwordController.text);
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => Homepage(),
+                                        ),
+                                      );
+                                      dispose();
+                                    }
+                                  } on FirebaseAuthException catch(e){ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Invalid Credentials')),
+                                  );} catch(_){}
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(

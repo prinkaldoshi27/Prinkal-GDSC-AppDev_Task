@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gdsc_app/LoginScreen.dart';
 import 'Notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'Events.dart';
 
 class Homepage extends StatefulWidget {
@@ -19,6 +21,18 @@ class _HomepageState extends State<Homepage> {
           title: Text('GDSC Homepage'),
           backgroundColor: Colors.purple,
           foregroundColor: Colors.white,
+            actions: <Widget>[
+        IconButton(
+        icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+          ),
+        ],
         ),
             body: Center(child: Text('GDSC Homepagae',style: TextStyle(
               fontSize: 20

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'Events.dart';
 import 'Homepage.dart';
+import 'LoginScreen.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({super.key});
@@ -20,6 +22,18 @@ class _NotificationsState extends State<Notifications> {
               title: Text('GDSC Notifications'),
               backgroundColor: Colors.purple,
               foregroundColor: Colors.white,
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.logout),
+                  tooltip: 'Logout',
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    );
+                  },
+                ),
+              ],
             ),
             body: Center(child: Text('GDSC Notifications',style: TextStyle(
                 fontSize: 20
